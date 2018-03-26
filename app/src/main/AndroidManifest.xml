@@ -19,7 +19,10 @@
         <activity android:name=".GameActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".GamePauseActivity"
+            android:theme="@style/AppTheme.CustomTheme"
+        ></activity>
     </application>
 
 </manifest>

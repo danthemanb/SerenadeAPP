@@ -1,6 +1,7 @@
 package dbarke.uci.edu.earlyserenade;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -113,12 +114,21 @@ public class GameActivity extends AppCompatActivity {
 
         // Temp return to main screen
         Button pauseBtn = (Button) findViewById(R.id.pauseBtn);
-        pauseBtn.setOnClickListener(new View.OnClickListener()  {
+        /*pauseBtn.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
                 Intent tempReturnToMainIntent = new Intent(getApplicationContext(), MainActivity.class);
                 // How to pass information to another activity
                 startActivity(tempReturnToMainIntent);
+            }
+        });
+        */
+        pauseBtn.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View view) {
+                Intent startPauseIntent = new Intent(getApplicationContext(), GamePauseActivity.class);
+                // How to pass information to another activity
+                startActivity(startPauseIntent);
             }
         });
 
