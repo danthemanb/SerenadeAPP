@@ -35,7 +35,8 @@ public class GameActivity extends AppCompatActivity {
         //timer.setBase(SystemClock.elapsedRealtime() - (guessTimeMin * 60000 + guessTimeSec * 1000));  //(nr_of_min * 60000 + nr_of_sec * 1000)
 
         // Playing with the Start Button
-        Button startButton = (Button) findViewById(R.id.timerBtn);
+        Button timerButton = (Button) findViewById(R.id.timerBtn);
+        Button startButton = (Button) findViewById(R.id.startBtn);
 
         final TextView testTxtView = (TextView) findViewById(R.id.testTxt);
         final TextView turnDisplay = (TextView) findViewById(R.id.turnDisplayTxt);
@@ -58,8 +59,15 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        startButton.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View view) {
+                // Start The clock
 
-        startButton.setOnTouchListener(new View.OnTouchListener() {
+            }
+        });
+
+        timerButton.setOnTouchListener(new View.OnTouchListener() {
             //@SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -123,6 +131,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         */
+
         pauseBtn.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
