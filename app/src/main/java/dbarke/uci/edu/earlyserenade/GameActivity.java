@@ -29,14 +29,15 @@ public class GameActivity extends AppCompatActivity {
 
         final long guessTimeSec = 30;    // Set the amount of time given to guess
         final long guessTimeMin = 0;
-        // Playing with Chronometer
+        // Chronometer Creation
         final Chronometer timer = (Chronometer) findViewById(R.id.timerChron);
         timer.setCountDown(true);
-        //timer.setBase(SystemClock.elapsedRealtime() - (guessTimeMin * 60000 + guessTimeSec * 1000));  //(nr_of_min * 60000 + nr_of_sec * 1000)
+        //timer.setVisibility(View.GONE);
 
         // Playing with the Start Button
-        Button timerButton = (Button) findViewById(R.id.timerBtn);
-        Button startButton = (Button) findViewById(R.id.startBtn);
+        final Button timerButton = (Button) findViewById(R.id.timerBtn);
+        timerButton.setVisibility(View.GONE);           // Time starts as invisible
+        final Button startButton = (Button) findViewById(R.id.startBtn);
 
         final TextView testTxtView = (TextView) findViewById(R.id.testTxt);
         final TextView turnDisplay = (TextView) findViewById(R.id.turnDisplayTxt);
@@ -51,6 +52,8 @@ public class GameActivity extends AppCompatActivity {
                 long testTime = -(((SystemClock.elapsedRealtime() - chronometer.getBase())/1000));
                 if (testTime <= 0) {
                     timer.stop();
+                    timerButton.setVisibility(View.GONE);
+                    startButton.setVisibility(View.VISIBLE);
                     currentGame.updateScore();
                     redPtsDisplay.setText("" + currentGame.getRedScore());
                     bluePtsDisplay.setText("" + currentGame.getBlueScore());
@@ -62,8 +65,15 @@ public class GameActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
-                // Start The clock
-
+                // Start the current round
+                timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + guessTimeSec * 1000));
+                timer.start();
+                startButton.setVisibility(View.GONE);
+                timerButton.setVisibility(View.VISIBLE);
+                if(currentGame.isRedsTurn())
+                    turnDisplay.setText("It is Red's Turn");
+                else
+                    turnDisplay.setText("It is Blue's Turn");
             }
         });
 
@@ -76,39 +86,19 @@ public class GameActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         // PRESSED
-                        if(currentGame.isTicking()){
-                            testTxtView.setText("Action_Down, IsTicking = 1");
-                            timer.stop();               // Start Singing a song
-                            currentGame.setTicking(false);
-                        }
-                        else {
-                            testTxtView.setText("Action_Down, IsTicking = 0");
-                            timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + guessTimeSec * 1000)); // Game start pt 1
-                        }
+                            timer.stop();
                         returnValue = true;
                         break; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
                         // RELEASED
-                        if(!currentGame.isTicking()){         // If the clock is not currently ticking, start ticking
-                            testTxtView.setText("Action_Up, IsTicking = 0");
                             timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + guessTimeSec * 1000));
                             timer.start();
-                            currentGame.setTicking(true);
-                        }
-                        else{
-                            testTxtView.setText("Action_Up, IsTicking = 1");        //Game Start pt 2
-                            timer.start();
-                            currentGame.setTicking(true);
-                            if(currentGame.isRedsTurn())
-                                turnDisplay.setText("It is Red's Turn");
-                            else
-                                turnDisplay.setText("It is Blue's Turn");
-                        }
+
                         if(currentGame.isRedsTurn()){               // Display and update the current turn
                             currentGame.setRedsTurn(false);
                             turnDisplay.setText("It is Blue's Turn");
                         }
-                        else{
+                        else
                             currentGame.setRedsTurn(true);
                             turnDisplay.setText("It is Red's Turn");
                         }
@@ -120,17 +110,8 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        // Temp return to main screen
+        // Open Pause Menu
         Button pauseBtn = (Button) findViewById(R.id.pauseBtn);
-        /*pauseBtn.setOnClickListener(new View.OnClickListener()  {
-            @Override
-            public void onClick(View view) {
-                Intent tempReturnToMainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                // How to pass information to another activity
-                startActivity(tempReturnToMainIntent);
-            }
-        });
-        */
 
         pauseBtn.setOnClickListener(new View.OnClickListener()  {
             @Override

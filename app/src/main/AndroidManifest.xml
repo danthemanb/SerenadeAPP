@@ -21,7 +21,7 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".GamePauseActivity"
-            android:theme="@style/AppTheme.CustomTheme"
+            android:theme="@style/AppTheme.ControlledPopup"
         ></activity>
     </application>
 
