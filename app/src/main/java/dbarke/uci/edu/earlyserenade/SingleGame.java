@@ -6,20 +6,11 @@ package dbarke.uci.edu.earlyserenade;
 
 public class SingleGame {
 
-    public SingleGame(boolean isTicking, boolean isRedsTurn, int gamePoint) {
-        this.isTicking = isTicking;
+    public SingleGame(boolean isRedsTurn, int redScore, int blueScore, int gamePoint) {
         this.isRedsTurn = isRedsTurn;
-        this.redScore = 0;
-        this.blueScore = 0;
+        this.redScore = redScore;
+        this.blueScore = blueScore;
         this.gamePoint = gamePoint;
-    }
-
-    public boolean isTicking() {
-        return isTicking;
-    }
-
-    public void setTicking(boolean ticking) {
-        isTicking = ticking;
     }
 
     public boolean isRedsTurn() {
@@ -46,6 +37,37 @@ public class SingleGame {
         this.blueScore = blueScore;
     }
 
+    public long getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(long seconds) {
+        this.seconds = seconds;
+    }
+
+    public int getGamePoint() {
+        return gamePoint;
+    }
+
+    public void setGamePoint(int gamePoint) {
+        this.gamePoint = gamePoint;
+    }
+
+    public void incRed(){this.redScore++;}
+
+    public void decRed(){this.redScore--;}
+
+    public void incBlue(){this.blueScore++;}
+
+    public void decBlue(){this.blueScore--;}
+
+    public void toggleTurn(){
+        if(this.isRedsTurn)
+            this.isRedsTurn = false;
+        else
+            this.isRedsTurn = true;
+    }
+
     public void updateScore(){
         if(this.isRedsTurn){               // Give blue a point if it's red's turn
             this.blueScore++;
@@ -64,10 +86,9 @@ public class SingleGame {
             return 0;
     }
 
-
-    private boolean isTicking;
     private boolean isRedsTurn;
     private int redScore;
     private int blueScore;
     private int gamePoint;
+    private long seconds;
 }

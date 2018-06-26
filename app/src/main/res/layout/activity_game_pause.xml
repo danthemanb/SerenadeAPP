@@ -17,13 +17,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Resume"
-        app:layout_constraintBottom_toTopOf="@+id/editPtsBtn"
+        app:layout_constraintBottom_toTopOf="@+id/incBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/editPtsBtn"
+        android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -48,5 +48,108 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPtsBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/decBlue" />
+
+    <Button
+        android:id="@+id/decBlue"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="-1 Blue"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editBtn" />
+
+    <Button
+        android:id="@+id/incBlue"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="+1 Blue"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/editBtn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/decRed"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="-1 Red"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editBtn" />
+
+    <Button
+        android:id="@+id/incRed"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="+1 Red"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/editBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/switchTurn"
+        android:layout_width="118dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Toggle Turn"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/getTime"
+        app:layout_constraintEnd_toStartOf="@+id/incBlue"
+        app:layout_constraintStart_toEndOf="@+id/incRed" />
+
+    <Button
+        android:id="@+id/setTime"
+        android:layout_width="118dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Adjust Timer"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@+id/decBlue"
+        app:layout_constraintStart_toEndOf="@+id/decRed"
+        app:layout_constraintTop_toBottomOf="@+id/editBtn" />
+
+    <EditText
+        android:id="@+id/getTime"
+        android:layout_width="162dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:text="New Time: Second"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/resumeBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
