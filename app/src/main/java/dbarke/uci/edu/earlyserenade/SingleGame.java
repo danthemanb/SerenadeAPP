@@ -6,11 +6,29 @@ package dbarke.uci.edu.earlyserenade;
 
 public class SingleGame {
 
+    public SingleGame(){}
+
     public SingleGame(boolean isRedsTurn, int redScore, int blueScore, int gamePoint) {
         this.isRedsTurn = isRedsTurn;
         this.redScore = redScore;
         this.blueScore = blueScore;
         this.gamePoint = gamePoint;
+    }
+
+    public void fillSingleGame(SingleGame old){
+        this.isRedsTurn = old.isRedsTurn();
+        this.redScore = old.getRedScore();
+        this.blueScore = old.getBlueScore();
+        this.gamePoint = old.getGamePoint();
+        this.seconds = old.getSeconds();
+    }
+
+    public void fillSingleGame(boolean oldisRedsTurn, int oldRedScore, int oldBlueScore, int oldGamePoint, long oldSeconds){
+        this.isRedsTurn = oldisRedsTurn;
+        this.redScore = oldRedScore;
+        this.blueScore = oldBlueScore;
+        this.gamePoint = oldGamePoint;
+        this.seconds = oldSeconds;
     }
 
     public boolean isRedsTurn() {
@@ -84,6 +102,13 @@ public class SingleGame {
             return 2;
         else
             return 0;
+    }
+
+    public String whosTurn(){
+        if(this.isRedsTurn)
+            return "Red's";
+        else
+            return "Blue's";
     }
 
     private boolean isRedsTurn;

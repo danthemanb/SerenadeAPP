@@ -37,7 +37,7 @@ public class GamePauseActivity extends AppCompatActivity {
         getWindow().setLayout(width,height);
 
         // Get information from GameActivity
-        Bundle bundle = getIntent().getExtras();
+        final Bundle bundle = getIntent().getExtras();
         final SingleGame currentGame = new SingleGame(bundle.getBoolean("isRedsTurn"), bundle.getInt("redScore"), bundle.getInt("blueScore"), bundle.getInt("gamePoint"));
         currentGame.setSeconds(bundle.getLong("secondsLeft"));
 
@@ -78,6 +78,7 @@ public class GamePauseActivity extends AppCompatActivity {
         editBtn.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
+                resultText.setText("Note: Edits will be not shown until game is resumed.");
                 showOptions();
             }
         });
@@ -101,6 +102,7 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentGame.incRed();
+                resultText.setText("Red Score Incremented to " + currentGame.getRedScore());
             }
         });
 
@@ -108,6 +110,7 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentGame.decRed();
+                resultText.setText("Red Score Decremented to " + currentGame.getRedScore());
             }
         });
 
@@ -115,6 +118,7 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentGame.incBlue();
+                resultText.setText("Blue Score Incremented to " + currentGame.getBlueScore());
             }
         });
 
@@ -122,6 +126,7 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentGame.decBlue();
+                resultText.setText("Blue Score Decremented to " + currentGame.getBlueScore());
             }
         });
 
@@ -129,6 +134,7 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentGame.toggleTurn();
+                resultText.setText("It is now " + currentGame.whosTurn() + "turn.");
             }
         });
 

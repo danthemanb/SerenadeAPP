@@ -37,6 +37,24 @@ public class GameActivity extends AppCompatActivity {
         final TextView timeDisplay = (TextView) findViewById(R.id.timeDisplay);
 
         final SingleGame currentGame = new SingleGame(true, 0, 0, gamePoint);
+        currentGame.setSeconds(guessTimeSec);
+
+        //create a second SingleGame object to hold the previous turn
+        final SingleGame lastTurn = new SingleGame();
+
+        // Initializing Buttons
+        final Button timerButton = (Button) findViewById(R.id.timerBtn);
+        timerButton.setVisibility(View.GONE);           // Time starts as invisible
+        final Button startButton = (Button) findViewById(R.id.startBtn);
+        final Button undoButton = (Button) findViewById(R.id.undoButton);
+        undoButton.setEnabled(false);
+
+        // Initialize Views
+        final TextView testTxtView = (TextView) findViewById(R.id.testTxt);
+        final TextView turnDisplay = (TextView) findViewById(R.id.turnDisplayTxt);
+        final TextView bluePtsDisplay = (TextView) findViewById(R.id.blueTeamPts);
+        final TextView redPtsDisplay = (TextView) findViewById(R.id.redTeamPts);
+
         /*    Check to see if pause bundle exists    */
         Intent intent = getIntent();
         if(intent.hasExtra("secondsLeft"))
@@ -50,18 +68,11 @@ public class GameActivity extends AppCompatActivity {
 
             timer.setBase(SystemClock.elapsedRealtime() + ((currentGame.getSeconds()+1) * 1000));
             timer.start();
+            startButton.setVisibility(View.GONE);
+            timerButton.setVisibility(View.VISIBLE);
+            turnDisplay.setText("It is " + currentGame.whosTurn() + "turn.");
         }
 
-        // Playing with the Start Button
-        final Button timerButton = (Button) findViewById(R.id.timerBtn);
-        timerButton.setVisibility(View.GONE);           // Time starts as invisible
-        final Button startButton = (Button) findViewById(R.id.startBtn);
-
-
-        final TextView testTxtView = (TextView) findViewById(R.id.testTxt);
-        final TextView turnDisplay = (TextView) findViewById(R.id.turnDisplayTxt);
-        final TextView bluePtsDisplay = (TextView) findViewById(R.id.blueTeamPts);
-        final TextView redPtsDisplay = (TextView) findViewById(R.id.redTeamPts);
         bluePtsDisplay.setText("" + currentGame.getBlueScore());
         redPtsDisplay.setText("" + currentGame.getRedScore());
 
@@ -73,6 +84,8 @@ public class GameActivity extends AppCompatActivity {
                 timeDisplay.setText("" + testTime);
                 if (testTime <= 0) {
                     timer.stop();
+                    lastTurn.fillSingleGame(currentGame.isRedsTurn(), lastTurn.getRedScore(), lastTurn.getBlueScore(), lastTurn.getGamePoint(), guessTimeSec);
+                    currentGame.setSeconds(guessTimeSec);
                     timerButton.setVisibility(View.GONE);
                     startButton.setVisibility(View.VISIBLE);
                     currentGame.updateScore();
@@ -88,14 +101,15 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Start the current round
-                timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + (guessTimeSec+1) * 1000));
+                //timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + (guessTimeSec+1) * 1000));
+                timer.setBase(SystemClock.elapsedRealtime() + ((currentGame.getSeconds()+1) * 1000));
                 timer.start();
                 startButton.setVisibility(View.GONE);
                 timerButton.setVisibility(View.VISIBLE);
-                if(currentGame.isRedsTurn())
-                    turnDisplay.setText("It is Red's Turn");
-                else
-                    turnDisplay.setText("It is Blue's Turn");
+                turnDisplay.setText("It is " + currentGame.whosTurn() + "turn.");
+                //Enable previous turn
+                //lastTurn.fillSingleGame(currentGame);
+                //undoButton.setEnabled(true);
             }
         });
 
@@ -109,6 +123,7 @@ public class GameActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         // PRESSED
                             v.setPressed(true);
+                            undoButton.setEnabled(false);
                             timer.stop();
                             timeDisplay.setText("SING!");
                         returnValue = true;
@@ -116,17 +131,12 @@ public class GameActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         // RELEASED
                             v.setPressed(false);
+                            lastTurn.fillSingleGame(currentGame);
+                            undoButton.setEnabled(true);
                             timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + (guessTimeSec+1) * 1000));
                             timer.start();
-
-                        if(currentGame.isRedsTurn()){               // Display and update the current turn
-                            currentGame.setRedsTurn(false);
-                            turnDisplay.setText("It is Blue's Turn");
-                        }
-                        else {
-                            currentGame.setRedsTurn(true);
-                            turnDisplay.setText("It is Red's Turn");
-                        }
+                            currentGame.toggleTurn();
+                            turnDisplay.setText("it is " + currentGame.whosTurn() + "turn.");
                         returnValue = true;
                         break; // if you want to handle the touch event
                 default:
@@ -150,6 +160,27 @@ public class GameActivity extends AppCompatActivity {
                 startPauseIntent.putExtra("isRedsTurn", currentGame.isRedsTurn());
                 // How to pass information to another activity
                 startActivity(startPauseIntent);
+            }
+        });
+
+        undoButton.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View view) {
+                // Pause gamestate and reset buttons
+                timer.stop();
+                undoButton.setEnabled(false);
+                timerButton.setVisibility(View.GONE);
+                startButton.setVisibility(View.VISIBLE);
+
+                // Reset currentGame to backup
+                currentGame.fillSingleGame(lastTurn);
+
+                // Update textviews to show user
+                redPtsDisplay.setText("" + currentGame.getRedScore());
+                bluePtsDisplay.setText("" + currentGame.getBlueScore());
+                testTxtView.setText("" + currentGame.testGameOver());
+                timeDisplay.setText("" + currentGame.getSeconds());
+                turnDisplay.setText("it is " + currentGame.whosTurn() + "turn.");
             }
         });
     }
