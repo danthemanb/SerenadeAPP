@@ -57,14 +57,15 @@ public class GameActivity extends AppCompatActivity {
 
         /*    Check to see if pause bundle exists    */
         Intent intent = getIntent();
-        if(intent.hasExtra("secondsLeft"))
+        if(intent.hasExtra("returnGameInfo"))
         {
             Bundle bundle = getIntent().getExtras();
-            currentGame.setRedsTurn(bundle.getBoolean("isRedsTurn"));
+            /*currentGame.setRedsTurn(bundle.getBoolean("isRedsTurn"));
             currentGame.setRedScore(bundle.getInt("redScore"));
             currentGame.setBlueScore(bundle.getInt("blueScore"));
             currentGame.setGamePoint(bundle.getInt("gamePoint"));
-            currentGame.setSeconds(bundle.getLong("secondsLeft"));
+            currentGame.setSeconds(bundle.getLong("secondsLeft")); */
+            currentGame.fillSingleGame((SingleGame)bundle.getSerializable("returnGameInfo"));
 
             timer.setBase(SystemClock.elapsedRealtime() + ((currentGame.getSeconds()+1) * 1000));
             timer.start();
@@ -153,11 +154,13 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 timer.stop();
                 Intent startPauseIntent = new Intent(getApplicationContext(), GamePauseActivity.class);
-                startPauseIntent.putExtra("secondsLeft", currentGame.getSeconds());
+                startPauseIntent.putExtra("CurrentGame", currentGame);
+                startPauseIntent.putExtra("LastTurn", lastTurn);
+                /*startPauseIntent.putExtra("secondsLeft", currentGame.getSeconds());
                 startPauseIntent.putExtra("redScore", currentGame.getRedScore());
                 startPauseIntent.putExtra("blueScore", currentGame.getBlueScore());
                 startPauseIntent.putExtra("gamePoint", currentGame.getGamePoint());
-                startPauseIntent.putExtra("isRedsTurn", currentGame.isRedsTurn());
+                startPauseIntent.putExtra("isRedsTurn", currentGame.isRedsTurn());*/
                 // How to pass information to another activity
                 startActivity(startPauseIntent);
             }

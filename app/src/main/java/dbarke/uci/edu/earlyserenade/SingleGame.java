@@ -1,10 +1,12 @@
 package dbarke.uci.edu.earlyserenade;
 
+import java.io.Serializable;
+
 /**
  * Created by Daniel on 3/23/2018.
  */
 
-public class SingleGame {
+public class SingleGame implements Serializable {
 
     public SingleGame(){}
 

@@ -38,8 +38,10 @@ public class GamePauseActivity extends AppCompatActivity {
 
         // Get information from GameActivity
         final Bundle bundle = getIntent().getExtras();
-        final SingleGame currentGame = new SingleGame(bundle.getBoolean("isRedsTurn"), bundle.getInt("redScore"), bundle.getInt("blueScore"), bundle.getInt("gamePoint"));
-        currentGame.setSeconds(bundle.getLong("secondsLeft"));
+        //final SingleGame currentGame = new SingleGame(bundle.getBoolean("isRedsTurn"), bundle.getInt("redScore"), bundle.getInt("blueScore"), bundle.getInt("gamePoint"));
+        //currentGame.setSeconds(bundle.getLong("secondsLeft"));
+        final SingleGame currentGame = (SingleGame) bundle.getSerializable("CurrentGame");
+        final SingleGame lastTurn = (SingleGame) bundle.getSerializable("LastTurn");
 
         // Set up edit buttons
         editBtn = findViewById(R.id.editBtn);
@@ -88,11 +90,12 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent resumeIntent = new Intent(getApplicationContext(), GameActivity.class);
-                resumeIntent.putExtra("secondsLeft", currentGame.getSeconds());
+                /*resumeIntent.putExtra("secondsLeft", currentGame.getSeconds());
                 resumeIntent.putExtra("redScore", currentGame.getRedScore());
                 resumeIntent.putExtra("blueScore", currentGame.getBlueScore());
                 resumeIntent.putExtra("gamePoint", currentGame.getGamePoint());
-                resumeIntent.putExtra("isRedsTurn", currentGame.isRedsTurn());
+                resumeIntent.putExtra("isRedsTurn", currentGame.isRedsTurn()); */
+                resumeIntent.putExtra("returnGameInfo", currentGame);
                 // How to pass information to another activity
                 startActivity(resumeIntent);
             }
@@ -138,14 +141,14 @@ public class GamePauseActivity extends AppCompatActivity {
             }
         });
 
+        final TextView timeInfo = (TextView) getTime;
         setTime.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
                 long newTime;
-             //   try{
-              //      newTime = Long.parseLong(getTime.getText().toString());
-               // })
-
+                newTime = Long.parseLong(timeInfo.getText().toString());
+                currentGame.setSeconds(newTime);
+                resultText.setText("" + currentGame.whosTurn() + " team now has " + currentGame.getSeconds() + " seconds.");
             }
         });
 
