@@ -38,8 +38,6 @@ public class GamePauseActivity extends AppCompatActivity {
 
         // Get information from GameActivity
         final Bundle bundle = getIntent().getExtras();
-        //final SingleGame currentGame = new SingleGame(bundle.getBoolean("isRedsTurn"), bundle.getInt("redScore"), bundle.getInt("blueScore"), bundle.getInt("gamePoint"));
-        //currentGame.setSeconds(bundle.getLong("secondsLeft"));
         final SingleGame currentGame = (SingleGame) bundle.getSerializable("CurrentGame");
         final SingleGame lastTurn = (SingleGame) bundle.getSerializable("LastTurn");
 
@@ -90,11 +88,6 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent resumeIntent = new Intent(getApplicationContext(), GameActivity.class);
-                /*resumeIntent.putExtra("secondsLeft", currentGame.getSeconds());
-                resumeIntent.putExtra("redScore", currentGame.getRedScore());
-                resumeIntent.putExtra("blueScore", currentGame.getBlueScore());
-                resumeIntent.putExtra("gamePoint", currentGame.getGamePoint());
-                resumeIntent.putExtra("isRedsTurn", currentGame.isRedsTurn()); */
                 resumeIntent.putExtra("returnGameInfo", currentGame);
                 // How to pass information to another activity
                 startActivity(resumeIntent);
@@ -171,12 +164,6 @@ public class GamePauseActivity extends AppCompatActivity {
         setTime.setVisibility(View.VISIBLE);
 
         // Perform the animation to hide the original options button
-        /*editBtn.animate().alpha(0f).setDuration(shortAnimationDuration).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                editBtn.setVisibility(View.GONE);
-            }
-        });*/
         editBtn.animate().alpha(0f).setDuration(shortAnimationDuration).setListener(null);
         editBtn.setVisibility(View.GONE);
 
