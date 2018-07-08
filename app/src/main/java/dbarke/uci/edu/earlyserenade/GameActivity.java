@@ -36,18 +36,17 @@ public class GameActivity extends AppCompatActivity {
         //timer.setVisibility(View.GONE);
         final TextView timeDisplay = (TextView) findViewById(R.id.timeDisplay);
 
-        final SingleGame currentGame = new SingleGame(true, 0, 0, gamePoint);
-        currentGame.setSeconds(guessTimeSec);
+        final SingleGame currentGame = new SingleGame(true, 0, 0, gamePoint, guessTimeSec);
 
         //create a second SingleGame object to hold the previous turn
         final SingleGame lastTurn = new SingleGame();
+        lastTurn.fillSingleGame(currentGame);
 
         // Initializing Buttons
         final Button timerButton = (Button) findViewById(R.id.timerBtn);
         timerButton.setVisibility(View.GONE);           // Time starts as invisible
         final Button startButton = (Button) findViewById(R.id.startBtn);
         final Button undoButton = (Button) findViewById(R.id.undoButton);
-        undoButton.setEnabled(false);
 
         // Initialize Views
         final TextView testTxtView = (TextView) findViewById(R.id.testTxt);
@@ -61,12 +60,13 @@ public class GameActivity extends AppCompatActivity {
         {
             Bundle bundle = getIntent().getExtras();
             currentGame.fillSingleGame((SingleGame)bundle.getSerializable("returnGameInfo"));
+            lastTurn.fillSingleGame((SingleGame)bundle.getSerializable("returnLastTurn"));
 
             timer.setBase(SystemClock.elapsedRealtime() + ((currentGame.getSeconds()+1) * 1000));
             timer.start();
             startButton.setVisibility(View.GONE);
             timerButton.setVisibility(View.VISIBLE);
-            turnDisplay.setText("It is " + currentGame.whosTurn() + "turn.");
+            turnDisplay.setText("It is " + currentGame.whosTurn() + " turn.");
         }
 
         bluePtsDisplay.setText("" + currentGame.getBlueScore());
@@ -89,6 +89,13 @@ public class GameActivity extends AppCompatActivity {
                     bluePtsDisplay.setText("" + currentGame.getBlueScore());
                     testTxtView.setText("" + currentGame.testGameOver());
                     // check if game over
+                    if(currentGame.testGameOver() > 0)
+                    {
+                        Intent endGameIntent = new Intent(getApplicationContext(), EndGameActivity.class);
+                        endGameIntent.putExtra("CurrentGame", currentGame);
+                        // How to pass information to another activity
+                        startActivity(endGameIntent);
+                    }
                 }
             }
         });
@@ -102,7 +109,7 @@ public class GameActivity extends AppCompatActivity {
                 timer.start();
                 startButton.setVisibility(View.GONE);
                 timerButton.setVisibility(View.VISIBLE);
-                turnDisplay.setText("It is " + currentGame.whosTurn() + "turn.");
+                turnDisplay.setText("It is " + currentGame.whosTurn() + " turn.");
                 //Enable previous turn
                 //lastTurn.fillSingleGame(currentGame);
                 //undoButton.setEnabled(true);
@@ -132,7 +139,7 @@ public class GameActivity extends AppCompatActivity {
                             timer.setBase(SystemClock.elapsedRealtime() + (guessTimeMin * 60000 + (guessTimeSec+1) * 1000));
                             timer.start();
                             currentGame.toggleTurn();
-                            turnDisplay.setText("it is " + currentGame.whosTurn() + "turn.");
+                            turnDisplay.setText("it is " + currentGame.whosTurn() + " turn.");
                         returnValue = true;
                         break; // if you want to handle the touch event
                 default:

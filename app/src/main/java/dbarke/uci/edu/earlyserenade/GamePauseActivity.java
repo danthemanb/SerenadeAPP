@@ -78,7 +78,7 @@ public class GamePauseActivity extends AppCompatActivity {
         editBtn.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
-                resultText.setText("Note: Edits will be not shown until game is resumed.");
+                resultText.setText("Edits will be not shown until game is resumed.");
                 showOptions();
             }
         });
@@ -89,6 +89,7 @@ public class GamePauseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent resumeIntent = new Intent(getApplicationContext(), GameActivity.class);
                 resumeIntent.putExtra("returnGameInfo", currentGame);
+                resumeIntent.putExtra("returnLastTurn", lastTurn);
                 // How to pass information to another activity
                 startActivity(resumeIntent);
             }

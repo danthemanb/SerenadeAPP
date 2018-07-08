@@ -10,11 +10,12 @@ public class SingleGame implements Serializable {
 
     public SingleGame(){}
 
-    public SingleGame(boolean isRedsTurn, int redScore, int blueScore, int gamePoint) {
+    public SingleGame(boolean isRedsTurn, int redScore, int blueScore, int gamePoint, long seconds) {
         this.isRedsTurn = isRedsTurn;
         this.redScore = redScore;
         this.blueScore = blueScore;
         this.gamePoint = gamePoint;
+        this.seconds = seconds;
     }
 
     public void fillSingleGame(SingleGame old){
