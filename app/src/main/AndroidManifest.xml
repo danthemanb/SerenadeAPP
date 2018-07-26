@@ -20,9 +20,10 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".GamePauseActivity"
-            android:theme="@style/AppTheme.ControlledPopup"
-        ></activity>
+        <activity
+            android:name=".GamePauseActivity"
+            android:theme="@style/AppTheme.ControlledPopup" />
+        <activity android:name=".CreditsActivity"></activity>
     </application>
 
 </manifest>

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toSettingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                Intent toSettingsIntent = new Intent(getApplicationContext(), CreditsActivity.class);
                 startActivity(toSettingsIntent);
             }
         });
