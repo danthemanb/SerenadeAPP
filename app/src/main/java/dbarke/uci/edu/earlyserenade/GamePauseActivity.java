@@ -2,11 +2,15 @@ package dbarke.uci.edu.earlyserenade;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -24,6 +28,14 @@ public class GamePauseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Set up exit animations
+        // inside your activity (if you did not enable transitions in your theme)
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+        // set an exit transition
+        getWindow().setExitTransition(new Fade());
+
+        // Default Stuff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_pause);
 
@@ -87,11 +99,12 @@ public class GamePauseActivity extends AppCompatActivity {
         returnToGameBtn.setOnClickListener(new View.OnClickListener()  {
             @Override
             public void onClick(View view) {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(GamePauseActivity.this);
                 Intent resumeIntent = new Intent(getApplicationContext(), GameActivity.class);
                 resumeIntent.putExtra("returnGameInfo", currentGame);
                 resumeIntent.putExtra("returnLastTurn", lastTurn);
                 // How to pass information to another activity
-                startActivity(resumeIntent);
+                startActivity(resumeIntent, options.toBundle());
             }
         });
 
@@ -140,9 +153,14 @@ public class GamePauseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 long newTime;
-                newTime = Long.parseLong(timeInfo.getText().toString());
-                currentGame.setSeconds(newTime);
-                resultText.setText("" + currentGame.whosTurn() + " team now has " + currentGame.getSeconds() + " seconds.");
+                try {
+                    newTime = Long.parseLong(timeInfo.getText().toString());
+                    currentGame.setSeconds(newTime);
+                    resultText.setText("" + currentGame.whosTurn() + " team now has " + currentGame.getSeconds() + " seconds.");
+                }
+                catch(NumberFormatException e){
+                    resultText.setText("Invalid Number Format");
+                }
             }
         });
 

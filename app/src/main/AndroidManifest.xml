@@ -26,6 +26,7 @@
         <activity
             android:name=".EndGameActivity"
             android:theme="@style/AppTheme.ControlledPopup" />
+        <activity android:name=".NoteActivity"></activity>
     </application>
 
 </manifest>

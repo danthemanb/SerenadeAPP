@@ -9,8 +9,10 @@ import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -22,6 +24,15 @@ public class GameActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Set up start Animation
+        // inside your activity (if you did not enable transitions in your theme)
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+        // set an exit transition
+        getWindow().setEnterTransition(new Fade());
+        getWindow().setAllowEnterTransitionOverlap(true);
+
+        // Default Things
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
