@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class NoteActivity extends AppCompatActivity {
 
     @Override
@@ -16,13 +18,8 @@ public class NoteActivity extends AppCompatActivity {
 
         ManageFiles testing = new ManageFiles(this.getApplicationContext());
 
-        testing.CreateList();
+        ArrayList<String> test = new ArrayList<>(testing.getSongs());
 
-        //String temp = testing.temp();
-        //listview.setText(temp);
-
-        String temp = testing.ReadList();
-        listview.setText(temp);
-
+        listview.setText(test.get(0));
     }
 }
