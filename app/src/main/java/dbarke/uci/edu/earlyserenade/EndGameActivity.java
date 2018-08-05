@@ -29,6 +29,10 @@ public class EndGameActivity extends AppCompatActivity {
         final Bundle bundle = getIntent().getExtras();
         final SingleGame currentGame = (SingleGame) bundle.getSerializable("CurrentGame");
 
+        // Same Songlist
+        ManageFiles songList = new ManageFiles(this.getApplicationContext(), 0);
+        songList.SaveList(currentGame.getSongs());
+
         // Initialize objects
         TextView resultsTextView = (TextView) findViewById(R.id.resultsTextView);
         Button newGameButton = (Button) findViewById(R.id.newGameButton);

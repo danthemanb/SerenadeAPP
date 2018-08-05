@@ -26,6 +26,14 @@ public class ManageFiles {
         ReadList();
     }
 
+    public ManageFiles(Context context, int temp){
+        File path = context.getFilesDir();
+        currentName = "SongList.txt";
+        appContext = context;
+
+        songlist = new File(path, currentName);
+    }
+
     private void shuffle(String[] list, int listLen) {
         Random rand = new Random();
         int randomNum;
@@ -98,7 +106,7 @@ public class ManageFiles {
 
     public void SaveList(ArrayList<String> list) {
         StringBuilder sb = new StringBuilder();
-        for (String temp : Songs)
+        for (String temp : list)
         {
             sb.append(temp);
             sb.append("@");
@@ -192,6 +200,10 @@ public class ManageFiles {
         String contents = new String(bytes);
         String[] tempArray = contents.split("@", 0);
         Songs = new ArrayList<>(Arrays.asList(tempArray));
+        if(Songs.isEmpty())
+        {
+            CreateList();
+        }
     }
 
     public ArrayList<String> getSongs() {

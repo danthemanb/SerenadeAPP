@@ -49,6 +49,10 @@ public class GameActivity extends AppCompatActivity {
 
         final SingleGame currentGame = new SingleGame(true, 0, 0, gamePoint, guessTimeSec);
 
+        // Create the songlist and put it into currentGame
+        ManageFiles songList = new ManageFiles(this.getApplicationContext());
+        currentGame.setSongs(songList.getSongs());
+
         //create a second SingleGame object to hold the previous turn
         final SingleGame lastTurn = new SingleGame();
         lastTurn.fillSingleGame(currentGame);
@@ -72,6 +76,7 @@ public class GameActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             currentGame.fillSingleGame((SingleGame)bundle.getSerializable("returnGameInfo"));
             lastTurn.fillSingleGame((SingleGame)bundle.getSerializable("returnLastTurn"));
+            testTxtView.setText(currentGame.getWord());
 
             timer.setBase(SystemClock.elapsedRealtime() + ((currentGame.getSeconds()+1) * 1000));
             timer.start();
@@ -91,14 +96,16 @@ public class GameActivity extends AppCompatActivity {
                 timeDisplay.setText("" + testTime);
                 if (testTime <= 0) {
                     timer.stop();
-                    lastTurn.fillSingleGame(currentGame.isRedsTurn(), lastTurn.getRedScore(), lastTurn.getBlueScore(), lastTurn.getGamePoint(), guessTimeSec);
+                    lastTurn.fillSingleGame(currentGame.isRedsTurn(), lastTurn.getRedScore(), lastTurn.getBlueScore(), lastTurn.getGamePoint(), guessTimeSec, lastTurn.getSongs());
+                    currentGame.newWord();
+                    currentGame.toggleTurn();
                     currentGame.setSeconds(guessTimeSec);
                     timerButton.setVisibility(View.GONE);
                     startButton.setVisibility(View.VISIBLE);
                     currentGame.updateScore();
                     redPtsDisplay.setText("" + currentGame.getRedScore());
                     bluePtsDisplay.setText("" + currentGame.getBlueScore());
-                    testTxtView.setText("" + currentGame.testGameOver());
+                    //testTxtView.setText("" + currentGame.testGameOver());
                     // check if game over
                     if(currentGame.testGameOver() > 0)
                     {
@@ -121,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
                 startButton.setVisibility(View.GONE);
                 timerButton.setVisibility(View.VISIBLE);
                 turnDisplay.setText("It is " + currentGame.whosTurn() + " turn.");
+                testTxtView.setText(currentGame.getWord());
                 //Enable previous turn
                 //lastTurn.fillSingleGame(currentGame);
                 //undoButton.setEnabled(true);
@@ -189,7 +197,7 @@ public class GameActivity extends AppCompatActivity {
                 // Update textviews to show user
                 redPtsDisplay.setText("" + currentGame.getRedScore());
                 bluePtsDisplay.setText("" + currentGame.getBlueScore());
-                testTxtView.setText("" + currentGame.testGameOver());
+                testTxtView.setText("" + currentGame.getWord());
                 timeDisplay.setText("" + currentGame.getSeconds());
                 turnDisplay.setText("it is " + currentGame.whosTurn() + "turn.");
             }

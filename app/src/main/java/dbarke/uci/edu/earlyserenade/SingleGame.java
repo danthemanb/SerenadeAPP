@@ -1,6 +1,7 @@
 package dbarke.uci.edu.earlyserenade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Daniel on 3/23/2018.
@@ -24,14 +25,16 @@ public class SingleGame implements Serializable {
         this.blueScore = old.getBlueScore();
         this.gamePoint = old.getGamePoint();
         this.seconds = old.getSeconds();
+        this.Songs = old.getSongs();
     }
 
-    public void fillSingleGame(boolean oldisRedsTurn, int oldRedScore, int oldBlueScore, int oldGamePoint, long oldSeconds){
+    public void fillSingleGame(boolean oldisRedsTurn, int oldRedScore, int oldBlueScore, int oldGamePoint, long oldSeconds, ArrayList<String> oldSongs){
         this.isRedsTurn = oldisRedsTurn;
         this.redScore = oldRedScore;
         this.blueScore = oldBlueScore;
         this.gamePoint = oldGamePoint;
         this.seconds = oldSeconds;
+        this.Songs = oldSongs;
     }
 
     public boolean isRedsTurn() {
@@ -82,6 +85,14 @@ public class SingleGame implements Serializable {
 
     public void decBlue(){this.blueScore--;}
 
+    public ArrayList<String> getSongs() {
+        return Songs;
+    }
+
+    public void setSongs(ArrayList<String> songs) {
+        Songs = songs;
+    }
+
     public void toggleTurn(){
         if(this.isRedsTurn)
             this.isRedsTurn = false;
@@ -114,6 +125,18 @@ public class SingleGame implements Serializable {
             return "Blue's";
     }
 
+    public String getWord(){
+        return Songs.get(0);
+    }
+
+    public String getNextWord(){
+        Songs.remove(0);
+        return Songs.get(0);
+    }
+
+    public void newWord(){Songs.remove(0);}
+
+    private ArrayList<String> Songs;
     private boolean isRedsTurn;
     private int redScore;
     private int blueScore;
