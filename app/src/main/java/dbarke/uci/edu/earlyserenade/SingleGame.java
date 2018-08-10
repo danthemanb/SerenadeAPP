@@ -26,17 +26,27 @@ public class SingleGame implements Serializable {
         this.gamePoint = old.getGamePoint();
         this.seconds = old.getSeconds();
         this.Songs = old.getSongs();
+        this.current = old.getCurrent();
     }
 
-    public void fillSingleGame(boolean oldisRedsTurn, int oldRedScore, int oldBlueScore, int oldGamePoint, long oldSeconds, ArrayList<String> oldSongs){
+    public void fillSingleGame(boolean oldisRedsTurn, int oldRedScore, int oldBlueScore, int oldGamePoint, long oldSeconds, ArrayList<String> oldSongs, String oldCurrent){
         this.isRedsTurn = oldisRedsTurn;
         this.redScore = oldRedScore;
         this.blueScore = oldBlueScore;
         this.gamePoint = oldGamePoint;
         this.seconds = oldSeconds;
         this.Songs = oldSongs;
+        this.current = oldCurrent;
     }
 
+    public String getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(String current) {
+        this.current = current;
+    }
+    
     public boolean isRedsTurn() {
         return isRedsTurn;
     }
@@ -91,6 +101,7 @@ public class SingleGame implements Serializable {
 
     public void setSongs(ArrayList<String> songs) {
         Songs = songs;
+        this.current = Songs.get(0);
     }
 
     public void toggleTurn(){
@@ -131,12 +142,18 @@ public class SingleGame implements Serializable {
 
     public String getNextWord(){
         Songs.remove(0);
+        this.current = Songs.get(0);
         return Songs.get(0);
     }
 
-    public void newWord(){Songs.remove(0);}
+    public void newWord()
+    {
+        Songs.remove(0);
+        this.current = Songs.get(0);
+    }
 
     private ArrayList<String> Songs;
+    private String current;
     private boolean isRedsTurn;
     private int redScore;
     private int blueScore;
